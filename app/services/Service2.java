@@ -1,7 +1,9 @@
 package services;
 
+import kamon.Kamon;
 import kamon.annotation.EnableKamon;
 import kamon.annotation.Trace;
+import kamon.metric.instrument.Counter;
 import kamon.trace.TraceContext;
 import kamon.trace.Tracer;
 import kamon.trace.Segment;
@@ -11,6 +13,10 @@ public class Service2 {
 	@Trace("TrackKamon")
 	public void method2() {
 		System.out.println("In Service2 : method2()");
+		
+		final Counter serviceCounter2 = Kamon.metrics().counter("service-counter-2");
+		serviceCounter2.increment();
+
 		final TraceContext context = Tracer.currentContext();
 
 		Tracer.withContext(context, () -> {
